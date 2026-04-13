@@ -2,8 +2,7 @@ package fasthttp
 
 import (
 	"encoding/json"
-	"fmt"
-	"goravel/app/facades"
+	"goravel/db"
 	"net/http"
 
 	"github.com/valyala/fasthttp"
@@ -19,8 +18,7 @@ func startHandler(ctx *fasthttp.RequestCtx) {
 		return
 	}
 
-	facades.Orm().WithContext(ctx).Query().Exec("WAITFOR DELAY '0:00:10'")
-	fmt.Print("\n[FastHTTP] Wait DB call done\n\n")
+	db.DelayedQuery(ctx, "FastHTTP")
 
 	body, _ := json.Marshal(map[string]string{"message": "ok"})
 	ctx.SetContentType("application/json")

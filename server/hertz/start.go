@@ -2,8 +2,7 @@ package hertz
 
 import (
 	"context"
-	"fmt"
-	"goravel/app/facades"
+	"goravel/db"
 	"net/http"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -18,8 +17,7 @@ func Start() {
 }
 
 func startHandler(c context.Context, ctx *app.RequestContext) {
-	facades.Orm().WithContext(c).Query().Exec("WAITFOR DELAY '0:00:10'")
-	fmt.Print("\n[Hertz] Wait DB call done\n\n")
+	db.DelayedQuery(c, "Hertz")
 
 	ctx.JSON(http.StatusOK, utils.H{
 		"message": "ok",
